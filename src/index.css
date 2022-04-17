@@ -10,7 +10,10 @@ body {
     align-items: center;
     height:90vh;  
     font-size: 16px;
+		background-image:url("artwork-cut.png");
+		background-size:cover;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -19,7 +22,6 @@ code {
 
 #container {
   width: 80vh;
- border: 4px dashed rgba(4, 4, 5, 0.1);
     min-height: 140px;
     padding: 32px;
     position: relative;
@@ -31,6 +33,8 @@ code {
     flex-direction: column;
     text-align:left;
     word-break: break-word;
+		background-color:#fafafaed;
+		box-shadow: 0px 0px 20px #3e3d3d;
 }
 
 input {

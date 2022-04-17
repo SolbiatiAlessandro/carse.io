@@ -8,7 +8,7 @@ import {
   getCurrentWalletConnected,
 } from "./util/interact.js";
 
-import alchemylogo from "./alchemylogo.svg";
+import logo from "./logo.png";
 
 const HelloWorld = () => {
   //state variables
@@ -82,7 +82,7 @@ const HelloWorld = () => {
   //the UI of our component
   return (
     <div id="container">
-      <img id="logo" src={alchemylogo}></img>
+      <img id="logo" src={logo}></img>
       <button id="walletButton" onClick={connectWalletPressed}>
         {walletAddress.length > 0 ? (
           "Connected: " +
