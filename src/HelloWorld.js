@@ -1,10 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {
-  helloWorldContract,
   connectWallet,
-  updateMessage,
-  loadCurrentMessage,
+  mintNFT,
   getCurrentWalletConnected,
 } from "./util/interact.js";
 
@@ -14,13 +12,10 @@ const HelloWorld = () => {
   //state variables
   const [walletAddress, setWallet] = useState("");
   const [status, setStatus] = useState("");
-  const [message, setMessage] = useState("No connection to the network."); //default message
   const [newMessage, setNewMessage] = useState("");
 
   //called only once
   useEffect(async () => {
-    const message = await loadCurrentMessage();
-    setMessage(message);
     addSmartContractListener();
 
     const { address, status } = await getCurrentWalletConnected();
@@ -32,15 +27,7 @@ const HelloWorld = () => {
   }, []);
 
   function addSmartContractListener() {
-    helloWorldContract.events.UpdatedMessages({}, (error, data) => {
-      if (error) {
-        setStatus("😥 " + error.message);
-      } else {
-        setMessage(data.returnValues[1]);
-        setNewMessage("");
-        setStatus("🎉 Your message has been updated!");
-      }
-    });
+		// TODO: was nft minted?
   }
 
   function addWalletListener() {
@@ -75,7 +62,7 @@ const HelloWorld = () => {
   };
 
   const onUpdatePressed = async () => {
-    const { status } = await updateMessage(walletAddress, newMessage);
+    const { status } = await mintNFT(walletAddress, newMessage);
     setStatus(status);
   };
 
@@ -94,15 +81,10 @@ const HelloWorld = () => {
         )}
       </button>
 
-      <h2 style={{ paddingTop: "50px" }}>Current Message:</h2>
-      <p>{message}</p>
-
-      <h2 style={{ paddingTop: "18px" }}>New Message:</h2>
-
       <div>
         <input
           type="text"
-          placeholder="Update the message in your smart contract."
+          placeholder="What's the last videogame you played?"
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage}
         />
