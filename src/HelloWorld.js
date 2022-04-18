@@ -91,7 +91,7 @@ const HelloWorld = () => {
         <p id="status">{status}</p>
 
         <button id="publish" onClick={onUpdatePressed}>
-          Update
+          Submit
         </button>
       </div>
     </div>
