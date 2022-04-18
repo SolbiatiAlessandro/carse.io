@@ -4,17 +4,12 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(alchemyKey);
 
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x6f3f635A9762B47954229Ea479b4541eAF402A6A";
+const contractAddress = "0xaCE4F7d01fE9B5641cBaF45a77BEc1c3a2A2b4c7";
 
-export const helloWorldContract = new web3.eth.Contract(
+export const carseContract = new web3.eth.Contract(
   contractABI,
   contractAddress
 );
-
-export const loadCurrentMessage = async () => {
-  const message = await helloWorldContract.methods.message().call();
-  return message;
-};
 
 export const connectWallet = async () => {
   if (window.ethereum) {
@@ -94,7 +89,7 @@ export const getCurrentWalletConnected = async () => {
   }
 };
 
-export const updateMessage = async (address, message) => {
+export const mintNFT = async (address, message) => {
   //input error handling
   if (!window.ethereum || address === null) {
     return {
@@ -108,11 +103,12 @@ export const updateMessage = async (address, message) => {
       status: "❌ Your message cannot be an empty string.",
     };
   }
+	
   //set up transaction parameters
   const transactionParameters = {
     to: contractAddress, // Required except during contract publications.
     from: address, // must match user's active address.
-    data: helloWorldContract.methods.update(message).encodeABI(),
+    data: carseContract.methods.mintNft(address, message).encodeABI(),
   };
 
   //sign the transaction
