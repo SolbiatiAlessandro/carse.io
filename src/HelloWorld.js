@@ -18,7 +18,8 @@ const HelloWorld = () => {
   //called only once
   useEffect(async () => {
     addSmartContractListener();
-		let [contract, wallet, walletAddress] = await newWallet();
+		//let [contract, wallet, walletAddress] = await newWallet();
+		let [contract, wallet, walletAddress] = [null, null, "123"];
 		setWallet(wallet);
 		setWalletAddress(walletAddress);
 		setContract(contract);
@@ -36,25 +37,26 @@ const HelloWorld = () => {
 
   //the UI of our component
   return (
-    <div id="container">
-      <img id="logo" src={logo}></img>
-      <button id="walletButton">
-        {walletAddress && walletAddress.length > 0 ? (
-          "Connected: " + String(walletAddress)
-        ) : (
-          <span>Connect Wallet</span>
-        )}
-      </button>
-
-      <div>
+    <div id="container" >
+		<div>
+				<img id="logo" src={logo}></img>
+				<button id="walletButton">
+					{walletAddress && walletAddress.length > 0 ? (
+						"Testnet burner wallet: " + String(walletAddress)
+					) : (
+						<span>Couldn't generate a wallet</span>
+					)}
+				</button>
+		</div>
+			<div class="pt-5 text-center">
         <input
           type="text"
           placeholder="What's the last videogame you played?"
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage}
+					style={{width: "50%"}}
         />
         <p id="status">{status}</p>
-
         <button id="publish" onClick={onUpdatePressed}>
           Submit
         </button>
