@@ -18,8 +18,8 @@ const HelloWorld = () => {
   //called only once
   useEffect(async () => {
     addSmartContractListener();
-		//let [contract, wallet, walletAddress] = await newWallet();
-		let [contract, wallet, walletAddress] = [null, null, "123"];
+		let [wallet, contract, walletAddress] = await newWallet();
+		//let [contract, wallet, walletAddress] = [null, null, "123"];
 		setWallet(wallet);
 		setWalletAddress(walletAddress);
 		setContract(contract);
@@ -31,7 +31,8 @@ const HelloWorld = () => {
   }
 
   const onUpdatePressed = async () => {
-    const { status } = await contractMint(wallet, contract, newMessage);
+		;debugger
+    const { status } = await contractMint(walletAddress, contract, newMessage);
     setStatus(status);
   };
 

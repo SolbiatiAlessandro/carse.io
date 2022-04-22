@@ -14,6 +14,8 @@ const alchemyProvider = new ethers.providers.AlchemyProvider(
 //Signer
 export async function newWallet(){
 	const signer = ethers.Wallet.createRandom();
+	// https://ethereum.stackexchange.com/questions/28880/ethers-js-missing-signer
+	signer.provider = alchemyProvider;
 	const carseNFT = new ethers.Contract(
 		CONTRACT_ADDRESS,
 		contract.abi,
@@ -24,9 +26,8 @@ export async function newWallet(){
 }
 
 //Contract
-
-export async function contractMint(signer, contract, message){
-	const tx = await contract.mintNft(signer.getAddress(), message);
+export async function contractMint(signerAddress, contract, message){
+	const tx = await contract.mintNft(signerAddress, message);
 	const res = await tx.wait();
 	console.log(res);
 	return res;
