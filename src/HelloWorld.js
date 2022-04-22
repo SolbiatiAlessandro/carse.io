@@ -1,68 +1,36 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import {
-  connectWallet,
-  mintNFT,
-  getCurrentWalletConnected,
-} from "./util/interact.js";
+  contractMint,
+	newWallet,
+} from "./eth/interact.js";
 
 import logo from "./logo.png";
 
 const HelloWorld = () => {
   //state variables
-  const [walletAddress, setWallet] = useState("");
+  const [wallet, setWallet] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [contract, setContract] = useState("");
   const [status, setStatus] = useState("");
   const [newMessage, setNewMessage] = useState("");
 
   //called only once
   useEffect(async () => {
     addSmartContractListener();
-
-    const { address, status } = await getCurrentWalletConnected();
-
-    setWallet(address);
+		let [contract, wallet, walletAddress] = await newWallet();
+		setWallet(wallet);
+		setWalletAddress(walletAddress);
+		setContract(contract);
     setStatus(status);
-
-    addWalletListener();
   }, []);
 
   function addSmartContractListener() {
 		// TODO: was nft minted?
   }
 
-  function addWalletListener() {
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length > 0) {
-          setWallet(accounts[0]);
-          setStatus("👆🏽 Write a message in the text-field above.");
-        } else {
-          setWallet("");
-          setStatus("🦊 Connect to Metamask using the top right button.");
-        }
-      });
-    } else {
-      setStatus(
-        <p>
-          {" "}
-          🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`}>
-            You must install Metamask, a virtual Ethereum wallet, in your
-            browser.
-          </a>
-        </p>
-      );
-    }
-  }
-
-  const connectWalletPressed = async () => {
-    const walletResponse = await connectWallet();
-    setStatus(walletResponse.status);
-    setWallet(walletResponse.address);
-  };
-
   const onUpdatePressed = async () => {
-    const { status } = await mintNFT(walletAddress, newMessage);
+    const { status } = await contractMint(wallet, contract, newMessage);
     setStatus(status);
   };
 
@@ -70,12 +38,9 @@ const HelloWorld = () => {
   return (
     <div id="container">
       <img id="logo" src={logo}></img>
-      <button id="walletButton" onClick={connectWalletPressed}>
-        {walletAddress.length > 0 ? (
-          "Connected: " +
-          String(walletAddress).substring(0, 6) +
-          "..." +
-          String(walletAddress).substring(38)
+      <button id="walletButton">
+        {walletAddress && walletAddress.length > 0 ? (
+          "Connected: " + String(walletAddress)
         ) : (
           <span>Connect Wallet</span>
         )}
